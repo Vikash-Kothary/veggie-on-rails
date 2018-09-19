@@ -7,9 +7,9 @@ import ffmpeg
 
 
 def main():
-	"""
-	See: https://github.com/kkroening/ffmpeg-python
-	"""
+    """
+    See: https://github.com/kkroening/ffmpeg-python
+    """
     stream = ffmpeg.input('input.mp4')
     .output(stream, 'output.mp4')
     .run(stream)
