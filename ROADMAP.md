@@ -4,7 +4,7 @@
 
 ### Documentation
 - [x] Gitignore
-- [ ] Readme
+- [x] Readme
 - [x] License
 - [x] Roadmap
 
