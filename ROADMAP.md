@@ -18,7 +18,7 @@
 ## Minimum Viable Product v0.0.0 
 
 ### Vision
-- [ ] Save a single frame
+- [x] Save a single frame
 - [ ] Detect rail
 - [ ] Detect vegetation
 - [ ] Define critical gauge i.e. area of 
