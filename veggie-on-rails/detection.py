@@ -3,17 +3,46 @@
 dectection.py - Identify features in an image
 """
 
+from utils import dir_files
+
+import cv2
 import numpy as np
-import cv2 as cv
+import skimage
+from skimage import io
 from matplotlib import pyplot as plt
 
-WINDOW_NAME = "dectection"
+"""
+TODO:
+- [ ] Check only left - delete anything on the right
+
+"""
+
+
+# files = dir_files('images')
+
+# for i in files:
+#     img = cv2.imread('images/'+i)
+#     get_green(img)
 
 
 def main():
-    img = cv.imread('images/rail_track.png', cv.IMREAD_UNCHANGED)
-    output = detect_trackts(img)
-    cv.imwrite('images/output.jpg', output)
+    files = dir_files('images')
+    for i in files:
+        img = cv2.imread('images/' + str(i))
+        if img is None:
+            raise ValueError('No image found')
+
+        img = preprocess(img)
+
+        tree_mask = filter_green(img)
+        tree_mask = col_slice(tree_mask)
+        track_mask = detect_tracks(img)
+        sliced = row_slice(track_mask)
+        #sliced = preprocess(sliced)
+        output = cv2.bitwise_not(sliced, sliced, mask=tree_mask)
+        output = cv2.bitwise_and(img, img, mask=output)
+
+        cv2.imwrite('results/' + str(i), output)
 
     # plt.subplot(121), plt.imshow(img, cmap='gray')
     # plt.title('Original Image'), plt.xticks([]), plt.yticks([])
@@ -22,23 +51,76 @@ def main():
     # plt.show()
 
 
-def detect_trackts(img):
+def row_slice(img):
+    """
+    """
+    print(img.shape)
+    zeros = np.zeros_like(img)
+    zeros[(img.shape[0] // 2):, :] = img[(img.shape[0] // 2):, :]
+    print('og' + str(img.shape))
+    # new_img = img[(img.shape[0] // 2):, :, :]
+    print('ng' + str(zeros.shape))
+    # cv2.imwrite('images/slice.jpg', zeros)
+    return zeros
+
+
+def col_slice(img):
+    """
+    """
+    print(img.shape)
+    zeros = np.zeros_like(img)
+    zeros[:, :((img.shape[1] // 3) * 2)] = img[:, :((img.shape[1] // 3) * 2)]
+    print('og' + str(img.shape))
+    # new_img = img[(img.shape[0] // 2):, :, :]
+    print('ng' + str(zeros.shape))
+    # cv2.imwrite('images/slice.jpg', zeros)
+    return zeros
+
+
+def preprocess(img):
+    """
+    """
+    blur = cv2.GaussianBlur(img, (5, 5), 0)
+    sobelx = cv2.Sobel(blur, cv2.CV_64F, 1, 0, ksize=5)
+    sobely = cv2.Sobel(blur, cv2.CV_64F, 0, 1, ksize=5)
+    return blur
+
+
+def detect_tracks(img):
     """
     See: https://docs.opencv.org/3.4.0/da/d22/tutorial_py_canny.html
-    SkiImage: http://scikit-image.org/docs/dev/auto_examples/edges/plot_canny.html
     """
 
-    blur = cv.GaussianBlur(img, (5, 5), 0)
-    sobelx = cv.Sobel(blur, cv.CV_64F, 1, 0, ksize=5)
-    sobely = cv.Sobel(blur, cv.CV_64F, 0, 1, ksize=5)
-
-    edges = cv.Canny(blur, 300, 200)
+    edges = cv2.Canny(img, 400, 200)
 
     kernel = np.ones((5, 5), np.uint8)
-    opening = cv.morphologyEx(img, cv.MORPH_OPEN, kernel)
-    closing = cv.morphologyEx(edges, cv.MORPH_CLOSE, kernel)
+    closing = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
 
+    #cv2.imwrite('images/tracks.jpg', closing)
     return closing
+
+
+def filter_green(img):
+    '''
+    Filters green out of image
+    '''
+    # plt.imshow(img)
+
+    GREEN_MIN = np.array([5, 0, 0], np.uint8)
+    GREEN_MAX = np.array([100, 255, 255], np.uint8)
+
+    hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    frame_threshed = cv2.inRange(hsv_img, GREEN_MIN, GREEN_MAX)
+    #cv2.imwrite('images/trees' + '.jpg', frame_threshed)
+
+    kernel = np.ones((5, 5), np.uint8)
+    closing = cv2.morphologyEx(frame_threshed, cv2.MORPH_CLOSE, kernel)
+
+    # image = io.imread('images/temp' + '.jpg')
+    # plt.imshow(image)
+    return frame_threshed
+
 
 if __name__ == '__main__':
     main()
