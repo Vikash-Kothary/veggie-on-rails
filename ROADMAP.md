@@ -9,8 +9,8 @@
 - [x] Roadmap
 
 ### Python environment
-- [ ] venv
-- [ ] requirements.pip
+- [x] venv
+- [x] requirements.pip
 
 ### Demo
 - [ ] Surge
