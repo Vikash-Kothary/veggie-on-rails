@@ -2,10 +2,13 @@ appnope==0.1.0
 autopep8==1.4
 backcall==0.1.0
 cloudpickle==0.5.6
+configparser==3.5.0
 cycler==0.10.0
 dask==0.19.2
 decorator==4.3.0
+ffmpeg-python==0.1.16
 future==0.16.0
+futures==3.2.0
 ipykernel==4.9.0
 ipython==6.5.0
 ipython-genutils==0.2.0
@@ -17,10 +20,12 @@ matplotlib==3.0.0
 mccabe==0.6.1
 networkx==2.1
 numpy==1.15.1
+opencv-python==3.4.3.18
 parso==0.3.1
 pexpect==4.6.0
 pickleshare==0.7.4
 Pillow==5.2.0
+pkg-resources==0.0.0
 pluggy==0.7.1
 prompt-toolkit==1.0.15
 ptyprocess==0.6.0
