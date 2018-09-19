@@ -26,21 +26,21 @@ TODO:
 
 
 def main():
-    files = dir_files('images')
+    files = dir_files('input')
     for i in files:
-        img = cv2.imread('images/' + str(i))
+        img = cv2.imread('input/' + str(i))
         if img is None:
             raise ValueError('No image found')
 
         img = preprocess(img)
 
         tree_mask = filter_green(img)
-        tree_mask = col_slice(tree_mask)
-        track_mask = detect_tracks(img)
-        sliced = row_slice(track_mask)
+        #tree_mask = col_slice(tree_mask)
+        #track_mask = detect_tracks(img)
+        #track_mask = row_slice(track_mask)
         #sliced = preprocess(sliced)
-        output = cv2.bitwise_not(sliced, sliced, mask=tree_mask)
-        output = cv2.bitwise_and(img, img, mask=output)
+        #output = cv2.bitwise_not(track_mask, track_mask, mask=tree_mask)
+        output = cv2.bitwise_and(img, img, mask=tree_mask)
 
         cv2.imwrite('results/' + str(i), output)
 
@@ -96,6 +96,10 @@ def detect_tracks(img):
     kernel = np.ones((5, 5), np.uint8)
     closing = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
 
+    # redImg = np.zeros(closing.shape, closing.dtype)
+    # redImg[:, :, :] = (0, 0, 255)
+    # redMask = cv2.bitwise_and(redImg, redImg, mask=closing)
+    # cv2.addWeighted(redMask, 1, img, 1, 0, img)
     #cv2.imwrite('images/tracks.jpg', closing)
     return closing
 
