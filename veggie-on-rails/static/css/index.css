@@ -1,0 +1,41 @@
+header {
+    padding-top: 1px;
+}
+
+footer div {
+    padding-bottom: 100px;
+
+   max-width: 50%;
+   max-height: 50%;
+}
+    
+
+.carousel-item {
+    height: 90vh;
+    max-height: 100%;
+    background: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel-item div img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+
+footer img{
+    width: 99%;
+    border: none;
+}
+
+.selected{
+    border:solid 1px red;
+}
