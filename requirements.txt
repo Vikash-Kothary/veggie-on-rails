@@ -1,3 +1,4 @@
+flask==0.12.2
 appnope==0.1.0
 autopep8==1.4
 backcall==0.1.0

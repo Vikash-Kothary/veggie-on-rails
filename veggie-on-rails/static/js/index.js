@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    $("#carousel-slide-1").addClass("active");
+    $("#carousel-selector-1").addClass("selected");
     $('.carousel').carousel();
     $('[id^=carousel-selector-]').click( function(){
         var id_selector = $(this).attr("id");

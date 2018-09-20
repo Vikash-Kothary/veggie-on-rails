@@ -4,11 +4,11 @@ header {
 
 footer div {
     padding-bottom: 100px;
-
-   max-width: 50%;
-   max-height: 50%;
+    overflow-y: scroll
+    max-width: 50%;
+    max-height: 50%;
 }
-    
+
 
 .carousel-item {
     height: 90vh;
